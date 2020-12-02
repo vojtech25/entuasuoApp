@@ -15,7 +15,7 @@ const Header = ({ left, leftStyle, leftAction, center, centerStyle, centerAction
                 {left}
             </Text></View>
             <View style={defaultCenterStyle} onClick={centerAction}><Text style={{ color: 'white', fontSize: 15 }}>
-                {'Maria Continuity'}
+                {center}
             </Text></View>
             <View style={defaultRightStyle} onClick={rightAction}><Text>
                 {right}

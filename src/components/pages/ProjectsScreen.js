@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, Button, ScrollView, ToastAndroid, TouchableOpacity } from 'react-native';
 import Collection from '../Collection'
 
-const HomeScreen = ({ navigation, route }) => {
+const ProjectsScreen = ({ navigation, route }) => {
 
     const [addingProject, setAddingProject] = useState(false)
     const [collections, setCollections] = useState([])
@@ -22,7 +22,7 @@ const HomeScreen = ({ navigation, route }) => {
     }
     const goTo = () => {
 
-        navigation.push('Project')
+        navigation.push('Character')
     }
 
     const showToast = () => {
@@ -32,14 +32,14 @@ const HomeScreen = ({ navigation, route }) => {
 
     return (
         <View style={{ flex: 1 }}>
-            {/* <Collection
+            <Collection
                 screenTitle={'Maria Continuity'}
                 collectionsArr={collectionsArr}
                 createNewProject={showToast}
                 collectionType={'Project'}
-                destination={goTo} /> */}
+                destination={goTo} />
         </View>
     )
 }
 
-export default HomeScreen
+export default ProjectsScreen

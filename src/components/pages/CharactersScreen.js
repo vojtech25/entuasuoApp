@@ -3,26 +3,27 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, Button, ScrollView, ToastAndroid, TouchableOpacity } from 'react-native';
 import Collection from '../Collection'
 
-const HomeScreen = ({ navigation, route }) => {
+const CharactersScreen = ({ navigation, route }) => {
 
-    const [addingProject, setAddingProject] = useState(false)
-    const [collections, setCollections] = useState([])
+    const [addingCharacter, setAddingCharacter] = useState(false)
+    const [characters, setCharacters] = useState([])
     const collectionsArr = ['secondo', 1, 'ultimo']
 
-    const addProject = (name, image) => {
-        const newProject = {
+    const addCharacter = (name, image) => {
+        const newCharacter = {
             name,
             image
         }
-        setCollections([
-            newProject,
-            ...collections
+        setCharacters([
+            newCharacter,
+            ...characters
         ])
         closeModal()
     }
+
     const goTo = () => {
 
-        navigation.push('Project')
+        navigation.push('Character')
     }
 
     const showToast = () => {
@@ -32,14 +33,14 @@ const HomeScreen = ({ navigation, route }) => {
 
     return (
         <View style={{ flex: 1 }}>
-            {/* <Collection
+            <Collection
+                collectionsArr={characters}
+                collectionType={'Character'}
                 screenTitle={'Maria Continuity'}
-                collectionsArr={collectionsArr}
                 createNewProject={showToast}
-                collectionType={'Project'}
-                destination={goTo} /> */}
+                destination={goTo} />
         </View>
     )
 }
 
-export default HomeScreen
+export default CharactersScreen

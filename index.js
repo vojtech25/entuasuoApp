@@ -2,8 +2,20 @@
  * @format
  */
 
-import { AppRegistry } from 'react-native';
-import App from './src/components/pages/HomeScreen';
-import { name as appName } from './app.json';
 
-AppRegistry.registerComponent(appName, () => App);
+import { AppRegistry } from 'react-native';
+import App from './src/components/Navigation';
+import { name as appName } from './app.json';
+import { LogBox } from 'react-native';
+
+
+LogBox.ignoreLogs(['Remote debugger']);
+
+AppRegistry.registerComponent(appName, () => {
+
+    return (
+        // 
+        App
+        // </NavigationContainer>
+    )
+});
