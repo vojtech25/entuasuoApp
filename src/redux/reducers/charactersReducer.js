@@ -14,16 +14,3 @@ export const charactersReducer = (state = initialState, { type, payload }) => {
             return state;
     }
 }
-
-
-
-// case GET_CHARACTER:
-//     const filtterdChracters = state.characters.filter(char=>char.uuid===payload)
-//     return {
-//         state
-//     }
-// case GET_ALL_CHARACTERS:
-//     return {
-//         ...state,
-//         characters: [...state.characters, payload]
-//     }

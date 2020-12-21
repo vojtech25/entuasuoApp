@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Button, TextInput, ImageView, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Button, TextInput, ImageView, Image, TouchableOpacity, ToastAndroid } from 'react-native';
 import ImagePicker from '../utils/pickImage'
 import 'react-native-get-random-values'
 import { v4 as uuid } from 'uuid';
@@ -8,7 +8,7 @@ import styles from './styles/AddProjectStyle'
 
 const AddProject = ({ closeModal, addProject, navigation, route }) => {
 
-    const comeFrom = route.name
+    const comeFrom = route.params.comeFrom
     const [loading, setLoading] = useState(false)
     const [projectInfo, setProjectInfo] = (
         comeFrom === 'project' ?
@@ -17,7 +17,7 @@ const AddProject = ({ closeModal, addProject, navigation, route }) => {
                 name: '',
                 image: null
             })
-            : comeFrom === 'charcter' ?
+            : comeFrom === 'character' ?
                 useState({
                     [`${comeFrom}Id`]: uuid(),
                     projectId: route.params.projectId,
@@ -30,10 +30,7 @@ const AddProject = ({ closeModal, addProject, navigation, route }) => {
                     name: '',
                     image: null
                 })
-
     )
-
-    console.log('checkParams', route.params)
 
     const changeProjectName = (name) => {
         setProjectInfo(prevState => {
@@ -55,23 +52,17 @@ const AddProject = ({ closeModal, addProject, navigation, route }) => {
                 })
             })
     }
+
     const saveProject = () => {
-        navigation.navigate(route.params.comeFrom, { projectInfo })
+        ToastAndroid.show(`${comeFrom} ${`created successfully`}`, ToastAndroid.LONG)
+        navigation.navigate(comeFrom, { projectInfo })
     }
 
     return (
         // <View style={styles.modalBackGround}>
         <View style={{ backgroundColor: 'orange', position: 'relative', padding: 10, height: 800, width: '100%' }}>
-            <TextInput type='text' id='name' value={projectInfo.name} onChangeText={changeProjectName} placeholder='Project Name' style={{
-                height: 50,
-                borderBottomWidth: 2,
-                borderColor: 'red'
-            }} />
-            <TextInput type='text' id='password' placeholder='Password' style={{
-                height: 100,
-                borderBottomWidth: 2,
-                borderColor: 'red'
-            }} />
+            <TextInput type='text' value={projectInfo.name} onChangeText={changeProjectName} placeholder='Project Name' style={{ height: 50, borderBottomWidth: 2, borderColor: 'red' }} />
+            <TextInput type='text' placeholder='Password' style={{ height: 100, borderBottomWidth: 2, borderColor: 'red' }} />
             <TextInput type='text' placeholder='Password' style={{ height: 100, backgroundColor: 'white' }} />
             <View style={styles.imageInput}>
                 <TouchableOpacity onPress={selectImage} style={styles.image}>
