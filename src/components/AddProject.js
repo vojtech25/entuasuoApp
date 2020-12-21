@@ -1,84 +1,91 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Button, TextInput, ImageView } from 'react-native';
-// import AddNewIcon from '../entuasoAsset/icons/AddNew'
-// import Header from './common/Header'
+import { StyleSheet, Text, View, Button, TextInput, ImageView, Image, TouchableOpacity } from 'react-native';
+import ImagePicker from '../utils/pickImage'
+import 'react-native-get-random-values'
+import { v4 as uuid } from 'uuid';
+
 import styles from './styles/AddProjectStyle'
-const AddProject = ({ closeModal, addProject }) => {
 
-    const [projectName, setProjectName] = useState('')
-    const [image, setimage] = useState(null)
+const AddProject = ({ closeModal, addProject, navigation, route }) => {
+
+    const comeFrom = route.name
     const [loading, setLoading] = useState(false)
-    let imageRef
+    const [projectInfo, setProjectInfo] = (
+        comeFrom === 'project' ?
+            useState({
+                [`${comeFrom}Id`]: uuid(),
+                name: '',
+                image: null
+            })
+            : comeFrom === 'charcter' ?
+                useState({
+                    [`${comeFrom}Id`]: uuid(),
+                    projectId: route.params.projectId,
+                    name: '',
+                    image: null
+                })
+                : useState({
+                    [`${comeFrom}Id`]: uuid(),
+                    characterId: route.params.characterId,
+                    name: '',
+                    image: null
+                })
 
-    const changeProjectName = (e) => {
-        setProjectName(e.target.value)
-    }
-    const handleImageChange = (e) => {
-        const reader = new FileReader()
-        reader.onload = () => {
-            if (reader.readyState === 2) {
-                setimage(reader.result)
+    )
+
+    console.log('checkParams', route.params)
+
+    const changeProjectName = (name) => {
+        setProjectInfo(prevState => {
+            return {
+                ...prevState,
+                name
             }
-        }
-        reader.readAsDataURL(e.target.files[0])
-        console.log(e.target.files[0])
+        })
     }
 
+    const selectImage = () => {
+        ImagePicker()
+            .then(img => {
+                setProjectInfo(prevState => {
+                    return {
+                        ...prevState,
+                        image: img.path
+                    }
+                })
+            })
+    }
     const saveProject = () => {
-        addProject(projectName, image)
+        navigation.navigate(route.params.comeFrom, { projectInfo })
     }
 
     return (
         // <View style={styles.modalBackGround}>
-        <View style={{ backgroundColor: 'orange', position: 'relative', padding: 10, height: 800, width: 800 }}>
-            {/* <Header left={'cancel'} leftAction={closeModal} center={'Add New Project'} right={'save'} rightAction={saveProject} /> */}
-            {/* <View style={{ display: 'flex', justifyContent: 'space-between' }}> */}
-
-            <TextInput type='text' id='name' value={projectName} onChange={changeProjectName} placeholder='Project Name' style={{
+        <View style={{ backgroundColor: 'orange', position: 'relative', padding: 10, height: 800, width: '100%' }}>
+            <TextInput type='text' id='name' value={projectInfo.name} onChangeText={changeProjectName} placeholder='Project Name' style={{
                 height: 50,
                 borderBottomWidth: 2,
                 borderColor: 'red'
             }} />
-            {/* </View> */}
-            {/* <View style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10 }}> */}
-            {/* <View style={{ marginLeft: 50, display: 'flex', flexDirection: 'column' }}> */}
             <TextInput type='text' id='password' placeholder='Password' style={{
                 height: 100,
                 borderBottomWidth: 2,
                 borderColor: 'red'
             }} />
             <TextInput type='text' placeholder='Password' style={{ height: 100, backgroundColor: 'white' }} />
-            {/* </View> */}
-            {/* </View> */}
-            {/* <View style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10 }}> */}
-            <TextInput
-                type='file'
-                ref={ref => imageRef = ref}
-                style={{ display: 'none' }}
-                accept="image/*"
-                onChange={handleImageChange} placeholder='' style={{
-                    height: 100,
-                    borderBottomWidth: 2,
-                    borderColor: 'red'
-                }} />
-            <View onClick={() => imageRef.click()} style={styles.imageInput}>
-                <View style={styles.image}>
+            <View style={styles.imageInput}>
+                <TouchableOpacity onPress={selectImage} style={styles.image}>
                     {
-                        image &&
-                        <ImageView alt='backgorundImage' src={image} />
+                        projectInfo.image &&
+                        <Image source={{ uri: projectInfo.image }} style={{ flex: 1 }} />
                     }
                     {
                         loading &&
                         <Text>We Are Loading...................</Text>
                     }
-                    {/* {
-                                !image && !loading &&
-                                <AddNewIcon />
-                            } */}
-                </View>
+                </TouchableOpacity>
             </View>
-            {/* </View> */}
-
+            <Button title='Save' onPress={saveProject} style={{ width: 200, height: 50 }} />
         </View>
         // </View>
     )

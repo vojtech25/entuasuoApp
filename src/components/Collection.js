@@ -15,7 +15,7 @@ const Collection = ({ collectionsArr, screenTitle, createNewProject, collectionT
     const route = useRoute()
 
     // const router = route ? route : 'nothing yet'
-    console.log('Route Params', route.params)
+    // console.log('Route Params', route.params)
 
     return (
         <View style={styles.container}>
@@ -25,9 +25,9 @@ const Collection = ({ collectionsArr, screenTitle, createNewProject, collectionT
                     {
                         collectionsArr.map((prgt, index) => {
                             return (
-                                <TouchableOpacity key={index} onPress={destination} style={styles.projectCard}>
-                                    <AddCard />
-                                    <Text>{prgt}</Text>
+                                <TouchableOpacity key={index} onPress={() => destination(prgt)} style={styles.projectCard}>
+                                    <AddCard image={prgt.image ? prgt.image : null} />
+                                    <Text>{prgt.name}</Text>
                                 </TouchableOpacity>
                             )
                         })

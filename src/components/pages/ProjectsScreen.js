@@ -1,28 +1,37 @@
-import 'react-native-gesture-handler';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button, ScrollView, ToastAndroid, TouchableOpacity } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import store from '../../redux/store'
+
 import Collection from '../Collection'
+import { addProject } from '../../redux/actions/projectActions'
+import Trait from '../Trait';
+
 
 const ProjectsScreen = ({ navigation, route }) => {
 
-    const [addingProject, setAddingProject] = useState(false)
-    const [collections, setCollections] = useState([])
-    const collectionsArr = ['secondo', 1, 'ultimo']
+    console.log('InThe Benigin', route)
+    const comeFrom = route.name
+    const projects = useSelector(state => state.projects.projects)
+    const dispatch = useDispatch()
 
-    const addProject = (name, image) => {
-        const newProject = {
-            name,
-            image
-        }
-        setCollections([
-            newProject,
-            ...collections
-        ])
-        closeModal()
+    useEffect(() => {
+        let projectInfo
+        const prog = route.params ? route.params.projectInfo : null
+
+        prog ? (projectInfo = prog, dispatch(addProject(projectInfo)), console.log('params Changed', projectInfo)) : console.log('Boh?!')
+
+    }, [route.params])
+
+
+    const createProject = () => {
+        navigation.navigate('createProject', { comeFrom })
+        // closeModal()
     }
-    const goTo = () => {
 
-        navigation.push('Character')
+
+    const goTo = (project) => {
+        navigation.navigate('character', { project: project })
     }
 
     const showToast = () => {
@@ -30,14 +39,18 @@ const ProjectsScreen = ({ navigation, route }) => {
         console.log('ZZeebi!!!!')
     };
 
+    console.log('store dai', store.getState())
+    console.log('Prooggg', projects)
     return (
         <View style={{ flex: 1 }}>
             <Collection
+                collectionsArr={projects}
                 screenTitle={'Maria Continuity'}
-                collectionsArr={collectionsArr}
-                createNewProject={showToast}
+                createNewProject={createProject}
+                destination={goTo}
                 collectionType={'Project'}
-                destination={goTo} />
+            />
+            {/* <AddProject /> */}
         </View>
     )
 }

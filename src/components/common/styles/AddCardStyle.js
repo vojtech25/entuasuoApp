@@ -15,10 +15,6 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     image: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        // marginVertical: 10,
         backgroundColor: 'blue',
         height: '100%',
         width: '100%',

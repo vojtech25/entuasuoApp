@@ -1,29 +1,32 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Button, ScrollView, ToastAndroid, TouchableOpacity } from 'react-native';
 import Collection from '../Collection'
+import { addCharacter } from '../../redux/actions/characterActions'
+import { useDispatch, useSelector } from 'react-redux';
 
 const CharactersScreen = ({ navigation, route }) => {
+    console.log('CharactTitle', route)
+    const comeFrom = route.name
+    const characters = useSelector(state => state.characters.characters)
+    const project_uuid = 'comingSoon'//route.params.project.projectId
+    const dispatch = useDispatch()
 
-    const [addingCharacter, setAddingCharacter] = useState(false)
-    const [characters, setCharacters] = useState([])
-    const collectionsArr = ['secondo', 1, 'ultimo']
+    useEffect(() => {
+        let characterInfo
+        const prog = route.params ? route.params.projectInfo : null
 
-    const addCharacter = (name, image) => {
-        const newCharacter = {
-            name,
-            image
-        }
-        setCharacters([
-            newCharacter,
-            ...characters
-        ])
-        closeModal()
+        prog ? (characterInfo = prog, dispatch(addCharacter(characterInfo))) : null
+
+    }, [route.params])
+
+    const createCharacter = () => {
+        navigation.navigate('createProject', { comeFrom, project_uuid })
+        // closeModal()
     }
 
-    const goTo = () => {
-
-        navigation.push('Character')
+    const goTo = (character) => {
+        navigation.push('sheet', { character: character })
     }
 
     const showToast = () => {
@@ -35,10 +38,11 @@ const CharactersScreen = ({ navigation, route }) => {
         <View style={{ flex: 1 }}>
             <Collection
                 collectionsArr={characters}
+                screenTitle={route.params.project.name}
+                createNewProject={createCharacter}
+                destination={goTo}
                 collectionType={'Character'}
-                screenTitle={'Maria Continuity'}
-                createNewProject={showToast}
-                destination={goTo} />
+            />
         </View>
     )
 }

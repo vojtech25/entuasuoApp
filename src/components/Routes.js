@@ -1,18 +1,23 @@
 import ProjectsScreen from "./pages/ProjectsScreen"
 import CharactersScreen from "./pages/CharactersScreen"
 import AddProject from "./AddProject"
+import SheetsScreen from "./pages/SheetsScreen"
 
 const routes = [
     {
-        name: 'Home',
+        name: 'project',
         component: ProjectsScreen
     },
     {
-        name: 'Character',
+        name: 'character',
         component: CharactersScreen
     },
     {
-        name: 'Project',
+        name: 'sheet',
+        component: SheetsScreen
+    },
+    {
+        name: 'createProject',
         component: AddProject
     }
 ]
