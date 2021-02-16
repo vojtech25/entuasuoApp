@@ -3,7 +3,6 @@ module.exports = {
   extends: '@react-native-community',
   rules: {
     "complexity": ["error", 10],
-    "semi": ["warn", "never"],
-    'prettier/prettier': 0,
+    "semi": ["warn", "never"]
   }
 };
